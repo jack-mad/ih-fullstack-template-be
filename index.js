@@ -3,18 +3,20 @@
 
 const express = require('express');
 const app = express();
-const hbs = require('hbs');
 const connectDB = require('./config/db');
+const cors = require('cors');
 
 //middlewares
 require('dotenv').config();
 connectDB();
-app.use(express.static('public'))
-app.set('views', __dirname + '/views');
-app.set('view engine', 'hbs');
-app.use(express.urlencoded({ extended: true }));
+app.use(cors()) //peticiones json de react hasta el servidor
+
+app.use(express.json({extended: true})); //config. expres para enviar json al servidor
+
 
 //ruteo
+app.use("/api/users", require("./routes/users"))
+app.use('/api/pets', require('./routes/pets'))
 app.use('/',require('./routes/routes'))
 
 //servidor
